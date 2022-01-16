@@ -1,0 +1,61 @@
+1279 (4.0b4)
+
+
+possible additions for 4.x?
+_ Tint on FX2D now works properly, and improved JavaFX/Scenebuilder integration
+_   https://github.com/processing/processing/pull/6051
+_ make offscreen PGraphicsFX2D work
+_   https://github.com/processing/processing/issues/4638
+_   https://github.com/processing/processing/pull/4698
+
+
+api
+_ better JavaFX-specific ways to handle loadImage()?
+_   https://github.com/processing/processing4/issues/56
+_ implement selectInput/Output/Folder methods in PSurfaceFX
+_ implement openLink() in PSurfaceFX
+
+
+issues
+_ Remove usage of com.sun.* in JavaFX library
+_   https://github.com/processing/processing4/issues/208
+_ many shift- keys not working properly in FX2D (added a test sketch)
+_   https://github.com/processing/processing/issues/5317
+_ Hitting ESC in FX2D app on macOS throws IllegalStateException
+_   https://github.com/processing/processing/issues/5249
+_ wrong window size with fullScreen()
+_   https://github.com/processing/processing/issues/4737
+_ menu bar not hiding properly in exported applications with FX2D
+_   https://github.com/processing/processing/issues/4527
+_   hideMenuBar() called from setup() works fine
+_   just call it around setup time?
+_ the --hide-stop option not working (FX only? traces?)
+_ make wiki about quirks
+_   starving the thread makes things really slow down
+_   keyPressed() is always uppercase, keyTyped() will be correct
+_ do we really need setTextFont/Size when we already have Impl?
+_ need keyPressed() to do lower and upper case
+_ static mode sketches (draw once and halt w/o closing window)
+_ fix display handling, line up the device order with AWT
+_   https://docs.oracle.com/javafx/2/api/javafx/stage/Screen.html
+_ noLoop()
+_ present mode not working at all
+_   stage in the center, clear the rest of the screen
+_ createGraphics() should probably create PGraphicsJava2D
+_   or is Canvas specific to the PGraphics, and we get another Context2D?
+_   http://docs.oracle.com/javafx/2/api/javafx/scene/canvas/Canvas.html
+_ loadPixels() (also 2x)
+_ text and fonts?
+_   maybe helpful: https://wiki.openjdk.java.net/display/OpenJFX/Font+Setup
+_ updatePixels()
+_ save() and saveFrame()
+_ get() and set()
+_ clip/noClip
+_   https://github.com/processing/processing/issues/3274
+_ getNative() in PImage problematic because it gives back a BufferedImage
+_   move loadImage() into PGraphics, with AWT version the default
+_   or pass createImage() through to renderer?
+_ implement external messages (moving the window)
+_ implement PSurfaceFX.setIcon()
+_ javafx not supported with ARM (so we're screwed on raspberry pi)
+_   https://www.linkedin.com/pulse/oracle-just-removed-javafx-support-arm-jan-snelders
