@@ -4,6 +4,9 @@
 # files for the build
 /bin
 
+# how to point to processing.core
+/local.properties
+
 # ignore the sdk download files
 javafx-*.zip
 
