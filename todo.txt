@@ -1,15 +1,17 @@
 1279 (4.0b4)
+o "Tint on FX2D now works properly, and improved JavaFX/Scenebuilder integration"
+o   https://github.com/processing/processing/pull/6051
+X   contains too many arbitrary changes (deleted lines, fields made public)
+X   uses new image cache object, not clear why
+X   cache mechanism would make memory run out
+
+contribs
+X make offscreen PGraphicsFX2D work (from @GKFX)
+X   https://github.com/processing/processing/issues/4638
+X   https://github.com/processing/processing/pull/4698
 
 
-possible additions for 4.x?
-_ Tint on FX2D now works properly, and improved JavaFX/Scenebuilder integration
-_   https://github.com/processing/processing/pull/6051
-_ make offscreen PGraphicsFX2D work
-_   https://github.com/processing/processing/issues/4638
-_   https://github.com/processing/processing/pull/4698
-
-
-api
+getting away from reliance on AWT
 _ better JavaFX-specific ways to handle loadImage()?
 _   https://github.com/processing/processing4/issues/56
 _ implement selectInput/Output/Folder methods in PSurfaceFX
