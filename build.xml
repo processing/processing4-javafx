@@ -1,8 +1,35 @@
 <?xml version="1.0"?>
 <project name="Processing JavaFX renderer" default="build">
 
+  <target name="core-check">
+    <property file="local.properties" />
+
+    <condition property="props.present">
+      <available file="local.properties" />
+    </condition>
+
+    <fail unless="processing.dir"
+          message="To make the build work, create a file named local.properties, with a line that reads:
+${line.separator}processing.dir=/path/to/processing-git
+${line.separator}with the path to where you have the code for Processing 4 checked out. ${line.separator}(This script will look for the 'core' directory inside that folder.)" />
+
+    <subant buildpath="${processing.dir}/core" />
+
+    <property name="core.dir" value="${processing.dir}/core/library" />
+
+    <condition property="processing.built">
+      <available file="${core.dir}/core.jar" />
+    </condition>
+
+    <fail unless="processing.built"
+          message="Please first build Processing (or at least core/build.xml) so that we have a usable core.jar to bundle with the app." />
+
+    <property name="core.path" location="${processing.dir}/core/library/core.jar" />
+  </target>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
   <!-- Using 'location' here to resolve to an absolute path -->
-  <property name="core.path" location="../../../core/library/core.jar" />
   <property name="library.path" location="./library" />
 
   <target name="clean" description="Clean the build directories">
@@ -150,12 +177,14 @@
     </antcall>
   </target>
 
-  <target name="compile" depends="download-javafx" description="Compile sources">
+  <target name="compile" depends="download-javafx,core-check" description="Compile sources">
+    <!--
     <condition property="core-built">
       <available file="${core.path}" />
     </condition>
     <fail unless="core-built"
           message="Please build the core library first: expecting core.jar at ${core.path}" />
+    -->
 
     <!-- just pick a platform; any should be sufficient for building -->
     <property name="javafx.jar.path" value="library/macosx/modules" />
