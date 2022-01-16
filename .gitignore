@@ -1,0 +1,11 @@
+.DS_Store
+*~
+
+# files for the build
+/bin
+
+# ignore the sdk download files
+javafx-*.zip
+
+# everything is downloaded from online
+/library
