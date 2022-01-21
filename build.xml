@@ -75,24 +75,15 @@ ${line.separator}with the path to where you have the code for Processing 4 check
   https://gluonhq.com/download/javafx-16-sdk-linux
   -->
 
-  <!-- JavaFX was removed from the Oracle JDK for ARM and Java 11.
-       There are arm32 and aarch64 builds for Linux (compatible with the Pi?)
-       but they're Early Access releases of JavaFX 17.
-       Downloads page is at https://gluonhq.com/products/javafx/
-
-       The links for the Apple Silicon and ARM Linux versions:
-       https://gluonhq.com/download/javafx-17-ea-sdk-mac-aarch64
-       https://gluonhq.com/download/javafx-17-ea-sdk-linux-aarch64
-       https://gluonhq.com/download/javafx-17-ea-sdk-linux-arm32
-
-       These could be better than nothing, but it's a different set of .jar files
-       (that would be identical across these three), but different from the main
-       versions. Not a good way to mix, unless have unique JARs for each platform,
-       which would be ~60 MB extra (for platforms that are < 2% usage). -->
-
   <!--
-    https://download2.gluonhq.com/openjfx/17.0.0.1/openjfx-17.0.0.1_linux-x64_bin-sdk.zip
-    https://download2.gluonhq.com/openjfx/17.0.0.1/openjfx-17.0.0.1_osx-x64_bin-sdk.zip
+    https://download2.gluonhq.com/openjfx/17.0.2/openjfx-17.0.2_osx-x64_bin-sdk.zip
+    https://download2.gluonhq.com/openjfx/17.0.2/openjfx-17.0.2_osx-aarch64_bin-sdk.zip
+
+    https://download2.gluonhq.com/openjfx/17.0.2/openjfx-17.0.2_windows-x64_bin-sdk.zip
+
+    https://download2.gluonhq.com/openjfx/17.0.2/openjfx-17.0.2_linux-x64_bin-sdk.zip
+    https://download2.gluonhq.com/openjfx/17.0.2/openjfx-17.0.2_linux-arm32_bin-sdk.zip
+    https://download2.gluonhq.com/openjfx/17.0.2/openjfx-17.0.2_linux-aarch64_bin-sdk.zip
   -->
   <target name="retrieve-gluon">
     <get src="https://download2.gluonhq.com/openjfx/${gluon.version}/openjfx-${gluon.version}_${platform.name}-x64_bin-sdk.zip"
