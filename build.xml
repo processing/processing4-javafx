@@ -67,9 +67,13 @@ ${line.separator}with the path to where you have the code for Processing 4 check
     https://download2.gluonhq.com/openjfx/17.0.2/openjfx-17.0.2_linux-aarch64_bin-sdk.zip
   -->
   <target name="retrieve-gluon">
+    <property name="platform.zip"
+           value="javafx-${gluon.version}-${platform.variant}.zip" />
+    <property name="platform.path"
+           value="${library.path}/${platform.variant}" />
+
     <get src="https://download2.gluonhq.com/openjfx/${gluon.version}/openjfx-${gluon.version}_${platform.name}-${platform.arch}_bin-sdk.zip"
          dest="${platform.zip}"
-         ignoreerrors="${javafx.ignorable}"
          usetimestamp="true" />
 
     <antcall target="unzip-gluon-jars" />
@@ -121,52 +125,60 @@ ${line.separator}with the path to where you have the code for Processing 4 check
   </target>
 
   <target name="download-javafx">
+    <property name="gluon.version" value="17.0.2" />
+
     <antcall target="retrieve-gluon">
-      <param name="gluon.base" value="javafx-${gluon.version}-macos" />
+      <!-- <param name="platform.zip" value="javafx-${gluon.version}-macos" /> -->
       <param name="platform.name" value="osx" />
       <param name="platform.arch" value="x64" />
-      <param name="platform.path" value="${library.path}/macos-x86_64" />
+      <!-- <param name="platform.path" value="${library.path}/macos-x86_64" /> -->
+      <param name="platform.variant" value="macos-x86_64" />
     </antcall>
 
     <antcall target="retrieve-gluon">
-      <param name="gluon.base" value="javafx-${gluon.version}-macos" />
+      <!-- <param name="gluon.base" value="javafx-${gluon.version}-macos" /> -->
       <param name="platform.name" value="osx" />
       <param name="platform.arch" value="aarch64" />
-      <param name="platform.path" value="${library.path}/macos-aarch64" />
+      <param name="platform.variant" value="macos-aarch64" />
+      <!-- <param name="platform.path" value="${library.path}/macos-aarch64" /> -->
     </antcall>
 
     <antcall target="retrieve-gluon">
-      <param name="gluon.base" value="javafx-${gluon.version}-windows" />
+      <!-- <param name="gluon.base" value="javafx-${gluon.version}-windows" /> -->
       <param name="platform.name" value="windows" />
       <param name="platform.arch" value="x64" />
-      <param name="platform.path" value="${library.path}/windows-amd64" />
+      <param name="platform.variant" value="windows-amd64" />
+      <!-- <param name="platform.path" value="${library.path}/windows-amd64" /> -->
     </antcall>
 
     <antcall target="retrieve-gluon">
-      <param name="gluon.base" value="javafx-${gluon.version}-linux" />
+      <!-- <param name="gluon.base" value="javafx-${gluon.version}-linux" /> -->
       <param name="platform.name" value="linux" />
       <param name="platform.arch" value="x64" />
-      <param name="platform.path" value="${library.path}/linux-amd64" />
+      <param name="platform.variant" value="linux-amd64" />
+      <!-- <param name="platform.path" value="${library.path}/linux-amd64" /> -->
     </antcall>
 
     <antcall target="retrieve-gluon">
-      <param name="gluon.base" value="javafx-${gluon.version}-linux" />
+      <!-- <param name="gluon.base" value="javafx-${gluon.version}-linux" /> -->
       <param name="platform.name" value="linux" />
       <param name="platform.arch" value="arm32" />
-      <param name="platform.path" value="${library.path}/linux-arm" />
+      <param name="platform.variant" value="linux-arm" />
+      <!-- <param name="platform.path" value="${library.path}/linux-arm" /> -->
     </antcall>
 
     <antcall target="retrieve-gluon">
-      <param name="gluon.base" value="javafx-${gluon.version}-linux" />
+      <!-- <param name="gluon.base" value="javafx-${gluon.version}-linux" /> -->
       <param name="platform.name" value="linux" />
       <param name="platform.arch" value="aarch64" />
-      <param name="platform.path" value="${library.path}/linux-aarch64" />
+      <param name="platform.variant" value="linux-aarch64" />
+      <!-- <param name="platform.path" value="${library.path}/linux-aarch64" /> -->
     </antcall>
   </target>
 
   <target name="compile" depends="download-javafx,core-check">
     <!-- just pick a platform; any should be sufficient for building -->
-    <property name="javafx.jar.path" value="library/macos/modules" />
+    <property name="javafx.jar.path" value="library/macos-x86_64/modules" />
 
     <mkdir dir="bin" />
     <javac source="11" target="11"
