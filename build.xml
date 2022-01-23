@@ -110,7 +110,8 @@ ${line.separator}with the path to where you have the code for Processing 4 check
         <include name="**/*.so" />
 
         <!-- The webkit library might be skipped because it is massive.
-             Remove libjfxwebkit.dylib, libjfxwebkit.so, jfxwebkit.dll -->
+             Un-comment this line for a smaller build. It will remove
+             libjfxwebkit.dylib, libjfxwebkit.so, jfxwebkit.dll -->
         <!-- <exclude name="**/*jfxwebkit.*" /> -->
 
         <!-- Not using this either, but since we're using 'include',
@@ -127,52 +128,43 @@ ${line.separator}with the path to where you have the code for Processing 4 check
   <target name="download-javafx">
     <property name="gluon.version" value="17.0.2" />
 
+    <!-- Retrieves all six of our (un)officially supported platforms.
+         You can comment some of these out if you'd like a smaller build. -->
+
     <antcall target="retrieve-gluon">
-      <!-- <param name="platform.zip" value="javafx-${gluon.version}-macos" /> -->
       <param name="platform.name" value="osx" />
       <param name="platform.arch" value="x64" />
-      <!-- <param name="platform.path" value="${library.path}/macos-x86_64" /> -->
       <param name="platform.variant" value="macos-x86_64" />
     </antcall>
 
     <antcall target="retrieve-gluon">
-      <!-- <param name="gluon.base" value="javafx-${gluon.version}-macos" /> -->
       <param name="platform.name" value="osx" />
       <param name="platform.arch" value="aarch64" />
       <param name="platform.variant" value="macos-aarch64" />
-      <!-- <param name="platform.path" value="${library.path}/macos-aarch64" /> -->
     </antcall>
 
     <antcall target="retrieve-gluon">
-      <!-- <param name="gluon.base" value="javafx-${gluon.version}-windows" /> -->
       <param name="platform.name" value="windows" />
       <param name="platform.arch" value="x64" />
       <param name="platform.variant" value="windows-amd64" />
-      <!-- <param name="platform.path" value="${library.path}/windows-amd64" /> -->
     </antcall>
 
     <antcall target="retrieve-gluon">
-      <!-- <param name="gluon.base" value="javafx-${gluon.version}-linux" /> -->
       <param name="platform.name" value="linux" />
       <param name="platform.arch" value="x64" />
       <param name="platform.variant" value="linux-amd64" />
-      <!-- <param name="platform.path" value="${library.path}/linux-amd64" /> -->
     </antcall>
 
     <antcall target="retrieve-gluon">
-      <!-- <param name="gluon.base" value="javafx-${gluon.version}-linux" /> -->
       <param name="platform.name" value="linux" />
       <param name="platform.arch" value="arm32" />
       <param name="platform.variant" value="linux-arm" />
-      <!-- <param name="platform.path" value="${library.path}/linux-arm" /> -->
     </antcall>
 
     <antcall target="retrieve-gluon">
-      <!-- <param name="gluon.base" value="javafx-${gluon.version}-linux" /> -->
       <param name="platform.name" value="linux" />
       <param name="platform.arch" value="aarch64" />
       <param name="platform.variant" value="linux-aarch64" />
-      <!-- <param name="platform.path" value="${library.path}/linux-aarch64" /> -->
     </antcall>
   </target>
 
