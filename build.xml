@@ -16,15 +16,15 @@ ${line.separator}with the path to where you have the code for Processing 4 check
     <subant buildpath="${processing.dir}/core" />
 
     <property name="core.dir" value="${processing.dir}/core/library" />
+    <property name="core.jar.path" location="${core.dir}/core.jar" />
 
     <condition property="processing.built">
-      <available file="${core.dir}/core.jar" />
+      <available file="${core.jar.path}" />
     </condition>
 
     <fail unless="processing.built"
           message="Please first build Processing (or at least core/build.xml) so that we have a usable core.jar to bundle with the app." />
 
-    <property name="core.path" location="${processing.dir}/core/library/core.jar" />
   </target>
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
@@ -34,30 +34,11 @@ ${line.separator}with the path to where you have the code for Processing 4 check
 
   <target name="clean" description="Clean the build directories">
     <delete dir="bin" />
-    <!-- Remove everything, which includes javafx.jar and files extracted from
-         GluonHQ downloads, but those can be reproduced from the downloaded zips. -->
+
+    <!-- Remove everything, which includes javafx.jar and files extracted
+         from the GluonHQ downloads, but those can be reproduced from the downloaded zips (which are not removed). -->
     <delete dir="${library.path}" />
   </target>
-
-  <condition property="fx.unavailable" value="true">
-    <or>
-      <equals arg1="${os.arch}" arg2="arm" />
-      <equals arg1="${os.arch}" arg2="aarch64" />
-    </or>
-  </condition>
-
-  <condition property="jfx.available" value="true">
-    <and>
-      <not><equals arg1="${os.arch}" arg2="arm" /></not>
-    </and>
-  </condition>
-
-  <available file="${gluon.base}.zip" property="javafx.present" />
-
-  <!-- ok to ignore failed downloads if we at least have a version that's local -->
-  <condition property="javafx.ignorable" value="false" else="true">
-    <isset property="javafx.present" />
-  </condition>
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
@@ -86,8 +67,8 @@ ${line.separator}with the path to where you have the code for Processing 4 check
     https://download2.gluonhq.com/openjfx/17.0.2/openjfx-17.0.2_linux-aarch64_bin-sdk.zip
   -->
   <target name="retrieve-gluon">
-    <get src="https://download2.gluonhq.com/openjfx/${gluon.version}/openjfx-${gluon.version}_${platform.name}-x64_bin-sdk.zip"
-         dest="${gluon.base}.zip"
+    <get src="https://download2.gluonhq.com/openjfx/${gluon.version}/openjfx-${gluon.version}_${platform.name}-${platform.arch}_bin-sdk.zip"
+         dest="${platform.zip}"
          ignoreerrors="${javafx.ignorable}"
          usetimestamp="true" />
 
@@ -97,15 +78,12 @@ ${line.separator}with the path to where you have the code for Processing 4 check
 
   <target name="unzip-gluon-jars">
     <property name="modules.path" value="${platform.path}/modules" />
-    <echo message="Extracting jars from ${gluon.base}.zip to ${modules.path}" />
+    <echo message="Extracting jars from ${platform.zip} to ${modules.path}" />
     <!-- should javafx.properties be copied? is it used for anything? [fry 210620] -->
 
-    <!-- https://ant.apache.org/manual/Tasks/unzip.html -->
-    <!-- <unzip dest="${library.path}" src="${gluon.base}.zip" overwrite="true"> -->
     <!-- !#($*#! the builds have *slightly* different classes in each release
-         (WinPlatformFactory not in macOS .jar... FFS it's 1100 bytes of glue code)
-         So the .jar files go into the native subdirectories as well. -->
-    <unzip dest="${modules.path}" src="${gluon.base}.zip" overwrite="true">
+         (WinPlatformFactory not in macOS .jar... FFS it's 1100 bytes of glue code) So the .jar files go into the native subdirectories as well. -->
+    <unzip dest="${modules.path}" src="${platform.zip}" overwrite="true">
       <patternset>
         <include name="**/*.jar" />
         <!-- These two aren't supported/used -->
@@ -119,18 +97,20 @@ ${line.separator}with the path to where you have the code for Processing 4 check
   </target>
 
   <target name="unzip-gluon-natives">
-    <echo message="Extracting native libs from ${gluon.base}.zip to ${platform.path}" />
+    <echo message="Extracting native libs from ${platform.zip} to ${platform.path}" />
 
-    <unzip dest="${platform.path}" src="${gluon.base}.zip" overwrite="true">
+    <unzip dest="${platform.path}" src="${platform.zip}" overwrite="true">
       <patternset>
         <include name="**/*.dll" />
         <include name="**/*.dylib" />
         <include name="**/*.so" />
-        <!-- The webkit library isn't included because this library is massive.
+
+        <!-- The webkit library might be skipped because it is massive.
              Remove libjfxwebkit.dylib, libjfxwebkit.so, jfxwebkit.dll -->
         <!-- <exclude name="**/*jfxwebkit.*" /> -->
 
-        <!-- Not using this either, but since we're using 'include', no need for it -->
+        <!-- Not using this either, but since we're using 'include',
+             no need for an 'exclude' line -->
         <!-- <exclude name="**/src.zip" /> -->
       </patternset>
 
@@ -141,51 +121,59 @@ ${line.separator}with the path to where you have the code for Processing 4 check
   </target>
 
   <target name="download-javafx">
-    <property name="gluon.version" value="17.0.1" />
-    <!-- current Early Access version, includes support for other architectures -->
-    <!-- <property name="gluon.version" value="17-ea" /> -->
-
-    <!-- http://ant.apache.org/manual/Tasks/tempfile.html -->
-    <!-- <tempfile property="temp.zip" destDir="${java.io.tmpdir}" suffix=".zip" /> -->
-
-    <!-- javafx-${gluon.version}-sdk-${gluon.platform} -->
     <antcall target="retrieve-gluon">
       <param name="gluon.base" value="javafx-${gluon.version}-macos" />
       <param name="platform.name" value="osx" />
-      <param name="platform.path" value="${library.path}/macosx" />
+      <param name="platform.arch" value="x64" />
+      <param name="platform.path" value="${library.path}/macos-x86_64" />
+    </antcall>
+
+    <antcall target="retrieve-gluon">
+      <param name="gluon.base" value="javafx-${gluon.version}-macos" />
+      <param name="platform.name" value="osx" />
+      <param name="platform.arch" value="aarch64" />
+      <param name="platform.path" value="${library.path}/macos-aarch64" />
     </antcall>
 
     <antcall target="retrieve-gluon">
       <param name="gluon.base" value="javafx-${gluon.version}-windows" />
       <param name="platform.name" value="windows" />
-      <param name="platform.path" value="${library.path}/windows64" />
+      <param name="platform.arch" value="x64" />
+      <param name="platform.path" value="${library.path}/windows-amd64" />
     </antcall>
 
     <antcall target="retrieve-gluon">
       <param name="gluon.base" value="javafx-${gluon.version}-linux" />
       <param name="platform.name" value="linux" />
-      <param name="platform.path" value="${library.path}/linux64" />
+      <param name="platform.arch" value="x64" />
+      <param name="platform.path" value="${library.path}/linux-amd64" />
+    </antcall>
+
+    <antcall target="retrieve-gluon">
+      <param name="gluon.base" value="javafx-${gluon.version}-linux" />
+      <param name="platform.name" value="linux" />
+      <param name="platform.arch" value="arm32" />
+      <param name="platform.path" value="${library.path}/linux-arm" />
+    </antcall>
+
+    <antcall target="retrieve-gluon">
+      <param name="gluon.base" value="javafx-${gluon.version}-linux" />
+      <param name="platform.name" value="linux" />
+      <param name="platform.arch" value="aarch64" />
+      <param name="platform.path" value="${library.path}/linux-aarch64" />
     </antcall>
   </target>
 
-  <target name="compile" depends="download-javafx,core-check" description="Compile sources">
-    <!--
-    <condition property="core-built">
-      <available file="${core.path}" />
-    </condition>
-    <fail unless="core-built"
-          message="Please build the core library first: expecting core.jar at ${core.path}" />
-    -->
-
+  <target name="compile" depends="download-javafx,core-check">
     <!-- just pick a platform; any should be sufficient for building -->
-    <property name="javafx.jar.path" value="library/macosx/modules" />
+    <property name="javafx.jar.path" value="library/macos/modules" />
 
     <mkdir dir="bin" />
     <javac source="11" target="11"
            srcdir="src" destdir="bin"
            encoding="UTF-8"
            includeAntRuntime="false"
-           classpath="${core.path};
+           classpath="${core.jar.path};
                       ${javafx.jar.path}/javafx.base.jar;
                       ${javafx.jar.path}/javafx.controls.jar;
                       ${javafx.jar.path}/javafx.fxml.jar;

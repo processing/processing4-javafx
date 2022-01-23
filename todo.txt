@@ -4,6 +4,10 @@ o   https://github.com/processing/processing/pull/6051
 X   contains too many arbitrary changes (deleted lines, fields made public)
 X   uses new image cache object, not clear why
 X   cache mechanism would make memory run out
+X add the five (now six) platforms to the javafx build
+X need internet connection for the build
+X   but too complicated to check whether each platform is available
+X   and not nearly as onerous a requirement now that it's not part of core
 
 contribs
 X make offscreen PGraphicsFX2D work (from @GKFX)
