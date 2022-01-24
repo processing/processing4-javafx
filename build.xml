@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <project name="Processing JavaFX renderer" default="build">
 
-  <property name="me" value="processing4-javafx" />
+  <property name="me" value="javafx" />
 
   <target name="core-check">
     <property file="local.properties" />

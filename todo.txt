@@ -1,4 +1,7 @@
 1280
+X change the name of the subfolder from processing4-javafx to javafx
+X   the former didn't work at all
+X   had to manually modify the download .zip for the previous release
 
 
 getting away from reliance on AWT
