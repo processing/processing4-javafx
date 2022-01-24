@@ -12,3 +12,6 @@ javafx-*.zip
 
 # everything is downloaded from online
 /library
+
+# the build files
+/dist

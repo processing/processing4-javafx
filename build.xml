@@ -1,6 +1,8 @@
 <?xml version="1.0"?>
 <project name="Processing JavaFX renderer" default="build">
 
+  <property name="me" value="processing4-javafx" />
+
   <target name="core-check">
     <property file="local.properties" />
 
@@ -190,4 +192,54 @@ ${line.separator}with the path to where you have the code for Processing 4 check
   <target name="build" depends="compile" description="Build JavaFX renderer">
     <jar basedir="bin" destfile="library/javafx.jar" />
   </target>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+  <target name="dist" depends="revision-check, build">
+    <mkdir dir="dist" />
+    <zip destfile="dist/${me}.zip">
+      <!-- This can probably be done more efficiently, no? How about a PR? -->
+      <zipfileset dir="." prefix="${me}" includes="library/**" />
+      <zipfileset dir="." prefix="${me}" includes="library.properties" />
+    </zip>
+    <copy file="library.properties" tofile="dist/${me}.txt" />
+  </target>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+  <target name="revision-check">
+    <!-- figure out the revision number -->
+    <loadfile srcfile="todo.txt" property="revision">
+      <filterchain>
+        <headfilter lines="1"/>
+        <tokenfilter>
+          <stringtokenizer suppressdelims="true" />
+          <!-- remove the preceding zeroes -->
+          <containsregex pattern="\d\d\d\d" />
+        </tokenfilter>
+      </filterchain>
+    </loadfile>
+    <!-- <echo message="revision is ${revision}." /> -->
+
+    <!-- figure out the revision number in library.properties -->
+    <loadfile srcfile="library.properties" property="properties.version">
+      <filterchain>
+        <tokenfilter>
+          <containsregex pattern="version\s*=\s*(\d+)*" replace="\1" />
+        </tokenfilter>
+        <striplinebreaks />
+      </filterchain>
+    </loadfile>
+    <!-- <echo message="properties.version is ${properties.version}." /> -->
+
+    <condition property="revision.correct">
+      <contains string="${revision}" substring="${properties.version}"/>
+    </condition>
+
+    <!-- the properties.version property won't be set
+         if $revision wasn't found... -->
+    <fail unless="revision.correct"
+          message="Fix version number in library.properties, it should be ${revision}" />
+  </target>
+
 </project>

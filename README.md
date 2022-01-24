@@ -41,6 +41,6 @@ These are not done by default because we've seen projects that (1) run on all th
 
         ant dist
 
-    Then upload dist/javafx.zip and dist/javafx.txt to the `latest` tag on Github. Can also upload them to the tag for the current version, for anyone installing manually.
+    Then upload dist/processing4-javafx.zip and dist/processing4-javafx.txt to the `latest` tag on Github. Can also upload them to the tag for the current version, for anyone installing manually.
 
 6. Add changes in MarkDown format to the release: <https://github.com/processing4/processing4-javafx/releases>
