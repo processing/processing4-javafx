@@ -409,8 +409,8 @@ public class PSurfaceFX implements PSurface {
     }
 
     startExceptionHandlerThread();
-
     setProcessingIcon(stage);
+    addWindowListeners();
   }
 
 
@@ -448,6 +448,46 @@ public class PSurfaceFX implements PSurface {
 //    if (stage != null) {
     stage.setTitle(title);
 //    }
+  }
+
+
+  ChangeListener<Number> stagePositionListener = (observable, oldValue, newValue) ->
+    sketch.postWindowPosition((int) stage.getX(), (int) stage.getY());
+
+  ChangeListener<Number> stageResizeListener = (observable, oldValue, newValue) ->
+    sketch.postWindowResize((int) stage.getWidth(), (int) stage.getHeight());
+
+
+  protected void addWindowListeners() {
+    /*
+    stage.xProperty().addListener(new ChangeListener<Number>() {
+      @Override
+      public void changed(ObservableValue<? extends Number> value,
+                          Number oldX, Number newX) {
+        sketch.postWindowPosition(newX.intValue(), stage.yProperty().intValue());
+      }
+    });
+
+    stage.yProperty().addListener(new ChangeListener<Number>() {
+      @Override
+      public void changed(ObservableValue<? extends Number> value,
+                          Number oldY, Number newY) {
+        sketch.postWindowPosition(stage.xProperty().intValue(), newY.intValue());
+      }
+    });
+    */
+
+    stage.xProperty().addListener(stagePositionListener);
+    stage.yProperty().addListener(stagePositionListener);
+
+    stage.widthProperty().addListener(stageResizeListener);
+    stage.heightProperty().addListener(stageResizeListener);
+
+    stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+      public void handle(WindowEvent we) {
+        sketch.exit();
+      }
+    });
   }
 
 
@@ -605,32 +645,6 @@ public class PSurfaceFX implements PSurface {
   public void placePresent(int stopColor) {
     // TODO Auto-generated method stub
     PApplet.hideMenuBar();
-  }
-
-
-  @Override
-  public void setupExternalMessages() {
-    stage.xProperty().addListener(new ChangeListener<Number>() {
-      @Override
-      public void changed(ObservableValue<? extends Number> value,
-                          Number oldX, Number newX) {
-        sketch.frameMoved(newX.intValue(), stage.yProperty().intValue());
-      }
-    });
-
-    stage.yProperty().addListener(new ChangeListener<Number>() {
-      @Override
-      public void changed(ObservableValue<? extends Number> value,
-                          Number oldY, Number newY) {
-        sketch.frameMoved(stage.xProperty().intValue(), newY.intValue());
-      }
-    });
-
-    stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-      public void handle(WindowEvent we) {
-        sketch.exit();
-      }
-    });
   }
 
 
