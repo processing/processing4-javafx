@@ -451,11 +451,11 @@ public class PSurfaceFX implements PSurface {
   }
 
 
-  ChangeListener<Number> stagePositionListener = (observable, oldValue, newValue) ->
-    sketch.postWindowPosition((int) stage.getX(), (int) stage.getY());
+  ChangeListener<Number> stageMovedListener = (observable, oldValue, newValue) ->
+    sketch.postWindowMoved((int) stage.getX(), (int) stage.getY());
 
-  ChangeListener<Number> stageResizeListener = (observable, oldValue, newValue) ->
-    sketch.postWindowResize((int) stage.getWidth(), (int) stage.getHeight());
+  ChangeListener<Number> stageResizedListener = (observable, oldValue, newValue) ->
+    sketch.postWindowResized((int) stage.getWidth(), (int) stage.getHeight());
 
 
   protected void addWindowListeners() {
@@ -477,11 +477,11 @@ public class PSurfaceFX implements PSurface {
     });
     */
 
-    stage.xProperty().addListener(stagePositionListener);
-    stage.yProperty().addListener(stagePositionListener);
+    stage.xProperty().addListener(stageMovedListener);
+    stage.yProperty().addListener(stageMovedListener);
 
-    stage.widthProperty().addListener(stageResizeListener);
-    stage.heightProperty().addListener(stageResizeListener);
+    stage.widthProperty().addListener(stageResizedListener);
+    stage.heightProperty().addListener(stageResizedListener);
 
     stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
       public void handle(WindowEvent we) {
@@ -637,6 +637,7 @@ public class PSurfaceFX implements PSurface {
     } else {  // just center on screen
       stage.centerOnScreen();
     }
+    sketch.postWindowMoved((int) stage.getX(), (int) stage.getY());
   }
 
 
