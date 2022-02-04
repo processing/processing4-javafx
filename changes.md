@@ -1,3 +1,12 @@
+# Revision 1280 (for Processing 4.0 beta 5)
+
+*3 February 2022*
+
+* Fixes for the folder layout (that were manually added while the previous release was being posted).
+
+* Updating handlers and functions for moving and resizing windows. [\#53](https://github.com/processing/processing4/issues/53)
+
+
 # Revision 1279 (for Processing 4.0 beta 4)
 
 *23 January 2022*
