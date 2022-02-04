@@ -24,7 +24,7 @@ These are not done by default because we've seen projects that (1) run on all th
 
 2. Tag the latest and push
 
-        git tag -a rev1279 -m 'Revision 1279 (Processing 4.0b4)'
+        git tag -a rev1280 -m 'Revision 1280 (Processing 4.0b5)'
         git push origin --tags
 
 3. Delete the previous `latest` tag
@@ -34,7 +34,7 @@ These are not done by default because we've seen projects that (1) run on all th
 
 4. Create new `latest` tag with the current state of the repo
 
-        git tag -f -a latest -m 'Revision 1279 (Processing 4.0b4)'
+        git tag -f -a latest -m 'Revision 1280 (Processing 4.0b5)'
         git push -f --tags
 
 5. Create the distribution
@@ -43,4 +43,4 @@ These are not done by default because we've seen projects that (1) run on all th
 
     Then upload dist/processing4-javafx.zip and dist/processing4-javafx.txt to the `latest` tag on Github. Can also upload them to the tag for the current version, for anyone installing manually.
 
-6. Add changes in MarkDown format to the release: <https://github.com/processing4/processing4-javafx/releases>
+6. Add changes in MarkDown format to the release: <https://github.com/processing/processing4-javafx/releases>
