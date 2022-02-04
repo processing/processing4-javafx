@@ -1,8 +1,6 @@
 <?xml version="1.0"?>
 <project name="Processing JavaFX renderer" default="build">
 
-  <property name="me" value="javafx" />
-
   <target name="core-check">
     <property file="local.properties" />
 
@@ -197,12 +195,11 @@ ${line.separator}with the path to where you have the code for Processing 4 check
 
   <target name="dist" depends="revision-check, build">
     <mkdir dir="dist" />
-    <zip destfile="dist/${me}.zip">
-      <!-- This can probably be done more efficiently, no? How about a PR? -->
-      <zipfileset dir="." prefix="${me}" includes="library/**" />
-      <zipfileset dir="." prefix="${me}" includes="library.properties" />
+    <zip destfile="dist/processing4-javafx.zip">
+      <zipfileset dir="." prefix="javafx" includes="library/**" />
+      <zipfileset dir="." prefix="javafx" includes="library.properties" />
     </zip>
-    <copy file="library.properties" tofile="dist/${me}.txt" />
+    <copy file="library.properties" tofile="dist/processing4-javafx.txt" />
   </target>
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->

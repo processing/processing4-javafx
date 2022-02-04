@@ -1,4 +1,5 @@
 1281
+X fix the names of the dist files
 
 
 getting away from reliance on AWT
