@@ -1,3 +1,11 @@
+1280 (4.0b5)
+X change the name of the subfolder from processing4-javafx to javafx
+X   the former didn't work at all
+X   had to manually modify the download .zip for the previous release
+X add handlers for window move and resize events
+X   https://github.com/processing/processing4/issues/53
+
+
 1279 (4.0b4)
 o "Tint on FX2D now works properly, and improved JavaFX/Scenebuilder integration"
 o   https://github.com/processing/processing/pull/6051
