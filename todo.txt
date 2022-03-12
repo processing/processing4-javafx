@@ -1,5 +1,6 @@
 1281
 X fix the names of the dist files
+X change type to "Renderer" (new category for 4.0 beta 8)
 
 
 getting away from reliance on AWT
